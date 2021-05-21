@@ -23,6 +23,11 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+const path = require("path");
+require('dotenv').config({path: './.env'});
+
+const HDWallet = require('@truffle/hdwallet-provider');
+const mnemonic = process.env.MNEMONIC;
 
 module.exports = {
   /**
@@ -72,6 +77,12 @@ module.exports = {
     // network_id: 2111,   // This network is yours, in the cloud.
     // production: true    // Treats this network as if it was a public net. (default: false)
     // }
+    rinkeby: {
+      networkCheckTimeout: 10000,
+      provider: () => new HDWallet(mnemonic, process.env.HOST),
+      // host: 'https://rinkeby.infura.io/v3/',
+      network_id: 4
+    }
   },
 
   // Set default mocha options here, use special reporters etc.
@@ -82,7 +93,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      // version: "0.5.1",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.0",    // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
